@@ -5,9 +5,9 @@ export const metadata = {
   description: "Discover & Share AI prompts",
 };
 
-const RootLayout = ({children}) => {
+const RootLayout = ({ children }) => {
   return (
-    <html Lang="en">
+    <html lang="en">
       <body>
         <div className="main">
           <div className="gradient" />
