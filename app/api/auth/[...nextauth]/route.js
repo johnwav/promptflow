@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 
 import User from "@models/user";
@@ -11,6 +11,7 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+
   callbacks: {
     async session({ session }) {
       try {
@@ -20,10 +21,9 @@ const handler = NextAuth({
 
         return session;
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     },
-
     async signIn({ account, profile, user, credentials }) {
       try {
         await connectToDB();
@@ -39,7 +39,6 @@ const handler = NextAuth({
             image: profile.picture,
           });
         }
-
         return true;
       } catch (error) {
         console.log("Error checking if user exists: ", error.message);
