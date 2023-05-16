@@ -17,7 +17,6 @@ const Nav = () => {
     };
 
     setUpProviders();
-    alert(providers);
   }, []);
 
   return (
