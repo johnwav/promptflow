@@ -19,7 +19,7 @@ const Nav = () => {
     setUpProviders();
     // alert(providers)
 
-  }, [providers]);
+  }, []);
 
 
   return (
