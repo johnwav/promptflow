@@ -3,21 +3,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { signIn, signOut, useSession, getProviders } from "next-auth";
+import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 const Nav = () => {
-  const isUserLoggedIn = true;
+  const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
-    const setProviders = async () => {
-      const response = await getProviders;
-
-      setProviders(response);
+    const setUpProviders = async () => {
+      const res = await getProviders();
+      setProviders(res);
     };
 
-    setProviders();
+    setUpProviders();
+    alert(providers);
   }, []);
 
   return (
@@ -36,7 +36,7 @@ const Nav = () => {
       {/* desk nav */}
 
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-prompt" className="black_btn">
               Create Prompt
@@ -59,7 +59,7 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              object.values(providers).map((provider) => (
+              Object.values(providers).map((provider) => (
                 <button
                   type="button"
                   key={provider.name}
@@ -76,7 +76,7 @@ const Nav = () => {
       {/* moble nav */}
 
       <div className="sm:hidden flex relative">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex">
             <Image
               src="/assets/images/logo.svg"
@@ -116,7 +116,7 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
-              object.values(providers).map((provider) => (
+              Object.values(providers).map((provider) => (
                 <button
                   type="button"
                   key={provider.name}
