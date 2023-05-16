@@ -1,54 +1,66 @@
-import Prompt from "@models/prompt";
-import { connectToDB } from "@utils/database";
+"use client";
 
-export const GET = async (request, { params }) => {
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import Form from "@components/Form";
+
+const UpdatePrompt = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const promptId = searchParams.get("id");
+
+  const [post, setPost] = useState({ prompt: "", tag: "", });
+  const [submitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const getPromptDetails = async () => {
+      const response = await fetch(`/api/prompt/${promptId}`);
+      const data = await response.json();
+
+      setPost({
+        prompt: data.prompt,
+        tag: data.tag,
+      });
+    };
+
+    if (promptId) getPromptDetails();
+  }, [promptId]);
+
+  const updatePrompt = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    if (!promptId) return alert("Missing PromptId!");
+
     try {
-        await connectToDB()
+      const response = await fetch(`/api/prompt/${promptId}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          prompt: post.prompt,
+          tag: post.tag,
+        }),
+      });
 
-        const prompt = await Prompt.findById(params.id).populate("creator")
-        if (!prompt) return new Response("Prompt Not Found", { status: 404 });
-
-        return new Response(JSON.stringify(prompt), { status: 200 })
-
+      if (response.ok) {
+        router.push("/");
+      }
     } catch (error) {
-        return new Response("Internal Server Error", { status: 500 });
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
-}
+  };
 
-export const PATCH = async (request, { params }) => {
-    const { prompt, tag } = await request.json();
-
-    try {
-        await connectToDB();
-
-        // Find the existing prompt by ID
-        const existingPrompt = await Prompt.findById(params.id);
-
-        if (!existingPrompt) {
-            return new Response("Prompt not found", { status: 404 });
-        }
-
-        // Update the prompt with new data
-        existingPrompt.prompt = prompt;
-        existingPrompt.tag = tag;
-
-        await existingPrompt.save();
-
-        return new Response("Successfully updated the Prompts", { status: 200 });
-    } catch (error) {
-        return new Response("Error Updating Prompt", { status: 500 });
-    }
+  return (
+    <Form
+      type='Edit'
+      post={post}
+      setPost={setPost}
+      submitting={submitting}
+      handleSubmit={updatePrompt}
+    />
+  );
 };
 
-export const DELETE = async (request, { params }) => {
-    try {
-        await connectToDB();
-
-        // Find the prompt by ID and remove it
-        await Prompt.findByIdAndRemove(params.id);
-
-        return new Response("Prompt deleted successfully", { status: 200 });
-    } catch (error) {
-        return new Response("Error deleting prompt", { status: 500 });
-    }
-};
+export default UpdatePrompt;
