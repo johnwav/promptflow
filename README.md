@@ -41,7 +41,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 - Semantic HTML5 markup
 - NextJS + Next Auth
-- MondoDB + Mongoose (backend)
+- MongoDB + Mongoose (backend)
 - CSS custom properties
 - Flexbox
 - CSS Grid
