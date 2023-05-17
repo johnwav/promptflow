@@ -18,6 +18,43 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+
+
+## Table of contents
+
+- [Overview](#overview)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+
+## Overview
+
+
+
+### Links
+
+- Live Site URL: (https://promptflow.vercel.app)
+
+## My process
+
+### Built with
+
+- Semantic HTML5 markup
+- NextJS + Next Auth
+- MondoDB + Mongoose (backend)
+- CSS custom properties
+- Flexbox
+- CSS Grid
+- Mobile-first workflow
+- [React](https://reactjs.org/) - JS library
+- [Next.js](https://nextjs.org/) - React framework
+- [Styled Components](https://styled-components.com/) - For styles
+
+
+
+
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
